@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Menu with Photos</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f2f2f2; }
+        h1 { text-align: center; }
+        .menu { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .item { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 250px; text-align: center; }
+        .item img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; }
+        .item h3 { margin: 10px 0 5px; }
+        .item p { margin: 5px 0; font-weight: bold; }
+        .item input[type="number"] { width: 60px; margin-top: 10px; }
+        #orderSummary { margin-top: 30px; text-align: center; }
+        button { padding: 10px 20px; font-size: 16px; margin-top: 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+
+    <h1>Restaurant Menu</h1>
+
+    <div class="menu">
+        <div class="item">
+            <img src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_960_720.jpg" alt="Pizza">
+            <h3>Pizza</h3>
+            <p>₹250</p>
+            <input type="number" min="0" value="0" data-price="250">
+        </div>
+        <div class="item">
+            <img src="https://cdn.pixabay.com/photo/2014/10/23/18/05/burger-500054_960_720.jpg" alt="Burger">
+            <h3>Burger</h3>
+            <p>₹150</p>
+            <input type="number" min="0" value="0" data-price="150">
+        </div>
+        <div class="item">
+            <img src="https://cdn.pixabay.com/photo/2017/05/07/08/56/pasta-2298014_960_720.jpg" alt="Pasta">
+            <h3>Pasta</h3>
+            <p>₹200</p>
+            <input type="number" min="0" value="0" data-price="200">
+        </div>
+        <div class="item">
+            <img src="https://cdn.pixabay.com/photo/2015/05/31/12/15/cold-drink-791120_960_720.jpg" alt="Cold Drink">
+            <h3>Cold Drink</h3>
+            <p>₹50</p>
+            <input type="number" min="0" value="0" data-price="50">
+        </div>
+        <div class="item">
+            <img src="https://cdn.pixabay.com/photo/2016/03/05/19/02/french-fries-1238247_960_720.jpg" alt="French Fries">
+            <h3>French Fries</h3>
+            <p>₹100</p>
+            <input type="number" min="0" value="0" data-price="100">
+        </div>
+    </div>
+
+    <div id="orderSummary">
+        <h2>Order Summary</h2>
+        <p id="summaryText">No items selected.</p>
+        <h3>Total: ₹<span id="totalPrice">0</span></h3>
+        <button onclick="placeOrder()">Place Order</button>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('.item input[type="number"]');
+        const summaryText = document.getElementById('summaryText');
+        const totalPriceElement = document.getElementById('totalPrice');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', updateSummary);
+        });
+
+        function updateSummary() {
+            let summary = [];
+            let total = 0;
+
+            inputs.forEach(input => {
+                const quantity = parseInt(input.value);
+                const price = parseInt(input.dataset.price);
+                const itemName = input.previousElementSibling.previousElementSibling.innerText;
+
+                if (quantity > 0) {
+                    summary.push(`${itemName} x ${quantity}`);
+                    total += price * quantity;
+                }
+            });
+
+            if (summary.length > 0) {
+                summaryText.innerText = summary.join(', ');
+            } else {
+                summaryText.innerText = "No items selected.";
+            }
+
+            totalPriceElement.innerText = total;
+        }
+
+        function placeOrder() {
+            if (totalPriceElement.innerText == "0") {
+                alert("Please select at least one item before placing the order.");
+            } else {
+                alert("Thank you! Your order has been placed.");
+            }
+        }
+    </script>
+
+</body>
+</html>
